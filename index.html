@@ -1,72 +1,253 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.2">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8">
+  <title>Sliding Blocks Game</title>
+  <style>
+    :root {
+      --cell-size: 80px;
+      --cell-gap: 10px;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #faf8ef;
+      margin: 0;
+      padding: 20px;
+    }
+    #controls {
+      margin-bottom: 10px;
+    }
+    #game {
+      margin: 20px auto;
+      position: relative;
+      background: #bbada0;
+      border-radius: 6px;
+      padding: var(--cell-gap);
+      display: grid;
+      grid-template-columns: repeat(var(--size), var(--cell-size));
+      grid-template-rows: repeat(var(--size), var(--cell-size));
+      gap: var(--cell-gap);
+    }
+    .cell {
+      background: #cdc1b4;
+      border-radius: 3px;
+    }
+    .tile {
+      position: absolute;
+      width: var(--cell-size);
+      height: var(--cell-size);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: bold;
+      background: #eee4da;
+      color: #776e65;
+      transition: transform 0.15s ease-in-out;
+    }
+    .tile.new {
+      animation: pop 0.15s;
+    }
+    @keyframes pop {
+      from { transform: scale(0); }
+      to { transform: scale(1); }
+    }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Countdown to Aleida&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: Arial, sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f9f9f9;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #333;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>h1 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 50px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 3rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #ff6f61;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>#countdown {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 2rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #555;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;Days Until Aleida Sees Simon&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="countdown"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>function updateCountdown() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const targetDate = new Date("January 14, 2025 00:00:00").getTime();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const now = new Date().getTime();</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const timeDifference = targetDate - now;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (timeDifference &gt; 0) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById("countdown").innerHTML =<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById("countdown").innerHTML = "Aleida and Simon are together!";</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Update countdown every second</p>
-<p class="p1"><span class="Apple-converted-space">        </span>setInterval(updateCountdown, 1000);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>updateCountdown(); // Run immediately to avoid delay</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <h1>Sliding Blocks</h1>
+  <div id="controls">
+    <label for="size">Board size:</label>
+    <select id="size">
+      <option value="4">4x4</option>
+      <option value="5">5x5</option>
+      <option value="6">6x6</option>
+    </select>
+    <button id="newGame">New Game</button>
+  </div>
+  <div>Score: <span id="score">0</span> | High Score: <span id="highScore">0</span></div>
+  <div id="game"></div>
+  <script>
+    let size = 4;
+    let board = [];
+    let score = 0;
+    let tileId = 0;
+    const tiles = new Map();
+    const game = document.getElementById('game');
+    const scoreEl = document.getElementById('score');
+    const highScoreEl = document.getElementById('highScore');
+    let highScore = parseInt(localStorage.getItem('highScore') || '0', 10);
+    highScoreEl.textContent = highScore;
+
+    function setup() {
+      game.style.setProperty('--size', size);
+      const side = size * parseInt(getComputedStyle(document.documentElement).getPropertyValue('--cell-size')) +
+                   (size + 1) * parseInt(getComputedStyle(document.documentElement).getPropertyValue('--cell-gap'));
+      game.style.width = side + 'px';
+      game.style.height = side + 'px';
+      game.innerHTML = '';
+      tiles.clear();
+      board = Array.from({length: size}, () => Array(size).fill(null));
+      for (let i = 0; i < size * size; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        game.appendChild(cell);
+      }
+      score = 0;
+      addRandomTile();
+      addRandomTile();
+      render();
+    }
+
+    function addRandomTile() {
+      const empty = [];
+      for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+          if (!board[i][j]) empty.push({i, j});
+        }
+      }
+      if (!empty.length) return;
+      const {i, j} = empty[Math.floor(Math.random() * empty.length)];
+      board[i][j] = {value: Math.random() < 0.9 ? 2 : 4, id: ++tileId};
+    }
+
+    function slideAndMerge(arr) {
+      let res = arr.filter(x => x);
+      for (let i = 0; i < res.length - 1; i++) {
+        if (res[i].value === res[i + 1].value) {
+          res[i].value *= 2;
+          score += res[i].value;
+          res[i].merged = true;
+          res.splice(i + 1, 1);
+        }
+      }
+      while (res.length < size) res.push(null);
+      res.forEach(t => { if (t) t.merged = false; });
+      return res;
+    }
+
+    function moveLeft() {
+      let moved = false;
+      for (let i = 0; i < size; i++) {
+        const newRow = slideAndMerge(board[i]);
+        if (!equalRows(board[i], newRow)) moved = true;
+        board[i] = newRow;
+      }
+      if (moved) {
+        addRandomTile();
+        render();
+      }
+    }
+
+    function moveRight() {
+      let moved = false;
+      for (let i = 0; i < size; i++) {
+        const row = [...board[i]].reverse();
+        const newRow = slideAndMerge(row).reverse();
+        if (!equalRows(board[i], newRow)) moved = true;
+        board[i] = newRow;
+      }
+      if (moved) {
+        addRandomTile();
+        render();
+      }
+    }
+
+    function moveUp() {
+      let moved = false;
+      for (let j = 0; j < size; j++) {
+        const col = [];
+        for (let i = 0; i < size; i++) col.push(board[i][j]);
+        const newCol = slideAndMerge(col);
+        for (let i = 0; i < size; i++) {
+          if (board[i][j] !== newCol[i]) moved = true;
+          board[i][j] = newCol[i];
+        }
+      }
+      if (moved) {
+        addRandomTile();
+        render();
+      }
+    }
+
+    function moveDown() {
+      let moved = false;
+      for (let j = 0; j < size; j++) {
+        const col = [];
+        for (let i = 0; i < size; i++) col.push(board[i][j]);
+        const newCol = slideAndMerge(col.reverse()).reverse();
+        for (let i = 0; i < size; i++) {
+          if (board[i][j] !== newCol[i]) moved = true;
+          board[i][j] = newCol[i];
+        }
+      }
+      if (moved) {
+        addRandomTile();
+        render();
+      }
+    }
+
+    function equalRows(a, b) {
+      for (let i = 0; i < size; i++) {
+        if (a[i] !== b[i]) return false;
+      }
+      return true;
+    }
+
+    function render() {
+      scoreEl.textContent = score;
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('highScore', highScore);
+      }
+      highScoreEl.textContent = highScore;
+      const cellSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--cell-size'));
+      const gap = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--cell-gap'));
+      tiles.forEach((el, id) => {
+        if (!board.some(row => row.some(t => t && t.id === id))) {
+          el.remove();
+          tiles.delete(id);
+        }
+      });
+      for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+          const tile = board[i][j];
+          if (!tile) continue;
+          let el = tiles.get(tile.id);
+          const x = j * (cellSize + gap) + gap;
+          const y = i * (cellSize + gap) + gap;
+          if (!el) {
+            el = document.createElement('div');
+            el.className = 'tile new';
+            el.textContent = tile.value;
+            game.appendChild(el);
+            tiles.set(tile.id, el);
+            requestAnimationFrame(() => el.classList.remove('new'));
+          } else {
+            el.textContent = tile.value;
+          }
+          el.style.transform = `translate(${x}px, ${y}px)`;
+        }
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      switch (e.key) {
+        case 'ArrowLeft': moveLeft(); break;
+        case 'ArrowRight': moveRight(); break;
+        case 'ArrowUp': moveUp(); break;
+        case 'ArrowDown': moveDown(); break;
+      }
+    });
+
+    document.getElementById('newGame').addEventListener('click', () => {
+      size = parseInt(document.getElementById('size').value, 10);
+      setup();
+    });
+
+    setup();
+  </script>
 </body>
 </html>
